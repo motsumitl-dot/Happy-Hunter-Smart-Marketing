@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Hunter - Smart Marketing Systems | Thabo Motsumi</title>
+    <meta name="description" content="AI-powered digital marketing systems and conversion engineering for South African SMEs. Specializing in GMB reinstatement and automated funnels.">
+    
+    <!-- Open Graph / Social Media Tags -->
+    <meta property="og:title" content="Happy Hunter - Smart Marketing Systems | Thabo Motsumi">
+    <meta property="og:description" content="AI-powered digital marketing systems and conversion engineering for South African SMEs. Specializing in GMB reinstatement and automated funnels.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://happyhunter.beehiiv.com/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>★</text></svg>">
+
+    <!-- Schema Markup (JSON-LD) for Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Happy Hunter - Smart Marketing Systems",
+      "url": "https://happyhunter.beehiiv.com/",
+      "logo": "https://res.cloudinary.com/dka0498ns/image/upload/v1762761708/Happy_Hunter_Logo_pmyh8u.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+27-60-101-6673",
+        "contactType": "Marketing/Sales"
+      },
+      "sameAs": [
+        "https://calendly.com/motsumitl/30min",
+        "https://wa.link/cdrsuc"
+      ]
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --brand-yellow: #FACC15; /* Using Tailwind's 'yellow-400' for consistency */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        .hero-bg {
+            background-color: #1a1a1a;
+            background-image: linear-gradient(45deg, #1a1a1a 0%, #000000 100%);
+        }
+        .btn-yellow {
+            background-color: var(--brand-yellow);
+            color: #1a1a1a;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px 0 rgba(250, 204, 21, 0.39);
+        }
+        .btn-yellow:hover {
+            background-color: #FBBF24;
+            color: #000;
+            box-shadow: 0 6px 20px 0 rgba(250, 204, 21, 0.5);
+            transform: translateY(-2px);
+        }
+        .btn-yellow:disabled {
+            background-color: #fde68a;
+            color: #92400e;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .service-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            cursor: pointer;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            border-color: var(--brand-yellow);
+        }
+        .service-card.active {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.2), 0 4px 6px -2px rgba(250, 204, 21, 0.1);
+            border-color: var(--brand-yellow);
+            background-color: #fffbeb;
+        }
+        .service-card .icon {
+            font-size: 2rem;
+            line-height: 1;
+            color: var(--brand-yellow);
+        }
+        .case-study-card {
+            display: block;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            background-color: #ffffff;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .case-study-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-5px);
+        }
+        .case-study-card-content {
+            padding: 1.5rem;
+        }
+        .case-study-card-tag {
+            display: inline-block;
+            background-color: #fefce8;
+            color: #ca8a04;
+            border-radius: 9999px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top-color: var(--brand-yellow);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .ai-result-card {
+            background-color: #fefce8;
+            border: 1px solid #fde68a;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.0"
+  }
+}
+</script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <div id="root"></div>
+</body>
+</html>
