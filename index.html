@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,15 +39,41 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            --brand-yellow: #FACC15; /* Using Tailwind's 'yellow-400' for consistency */
-        }
-        body {
-            font-family: 'Inter', sans-serif;
+            --brand-yellow: #FACC15;
+            --color-dark: #111827;
+            --color-light-gray: #f9fafb;
+            --focus-ring: 0 0 0 3px rgba(250, 204, 21, 0.5);
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
-        .hero-bg {
-            background-color: #1a1a1a;
-            background-image: linear-gradient(45deg, #1a1a1a 0%, #000000 100%);
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-light-gray);
+            color: #374151;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+        .focus\:not-sr-only:focus {
+            position: static;
+            width: auto;
+            height: auto;
+            padding: 1rem;
+            margin: 1rem;
+            overflow: visible;
+            clip: auto;
+            white-space: normal;
+            background-color: var(--brand-yellow);
+            color: var(--color-dark);
+            z-index: 1000;
         }
         .btn-yellow {
             background-color: var(--brand-yellow);
@@ -88,36 +114,49 @@
             border-color: var(--brand-yellow);
             background-color: #fffbeb;
         }
-        .service-card .icon {
-            font-size: 2rem;
-            line-height: 1;
-            color: var(--brand-yellow);
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
         }
-        .case-study-card {
-            display: block;
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 2rem;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 600px;
             border-radius: 0.75rem;
-            overflow: hidden;
-            background-color: #ffffff;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.3s ease-out;
+            position: relative;
         }
-        .case-study-card:hover {
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            transform: translateY(-5px);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .case-study-card-content {
-            padding: 1.5rem;
+        .modal-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1;
+            transition: color 0.3s ease;
+            cursor: pointer;
         }
-        .case-study-card-tag {
-            display: inline-block;
-            background-color: #fefce8;
-            color: #ca8a04;
-            border-radius: 9999px;
-            padding: 0.25rem 0.75rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
+        .modal-close:hover,
+        .modal-close:focus {
+            color: #1a1a1a;
+            text-decoration: none;
         }
         .loader {
             border: 4px solid #f3f3f3;
@@ -130,26 +169,601 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        .ai-result-card {
+        .audit-score-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+        .audit-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .audit-list li::before {
+            content: '✔';
+            color: #10B981; /* green-500 */
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+        .audit-list li.warn::before {
+            content: '⚠';
+            color: #F59E0B; /* amber-500 */
+        }
+        .case-study-card-tag {
+            display: inline-block;
             background-color: #fefce8;
-            border: 1px solid #fde68a;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-top: 1rem;
+            color: #ca8a04;
+            border-radius: 9999px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
     </style>
-<script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.0"
-  }
-}
-</script>
 </head>
 <body class="bg-gray-50 text-gray-800">
-    <div id="root"></div>
+    <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
+    
+    <!-- Header -->
+    <header class="bg-black text-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-3">
+                <img src="https://res.cloudinary.com/dka0498ns/image/upload/v1762761708/Happy_Hunter_Logo_pmyh8u.png" alt="Happy Hunter Logo" class="h-10 w-auto">
+                <span class="text-xl font-bold tracking-tight text-white hidden sm:block">
+                    Happy Hunter
+                    <span class="text-yellow-400">/ Smart Marketing</span>
+                </span>
+            </a>
+            <div class="hidden md:flex space-x-6 items-center text-gray-300">
+                <a href="#services" class="hover:text-yellow-400 transition">Services</a>
+                <a href="#projects" class="hover:text-yellow-400 transition">Case Studies</a>
+                <a href="#about" class="hover:text-yellow-400 transition">About</a>
+                <a href="#contact" class="inline-block px-4 py-2 rounded-md text-sm btn-yellow">Get in Touch</a>
+            </div>
+             <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-300 hover:text-white" aria-controls="mobile-menu" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#services" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Services</a>
+                <a href="#projects" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Case Studies</a>
+                <a href="#about" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">About</a>
+                <a href="#contact" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Get in Touch</a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section id="hero" class="bg-black text-white">
+            <div class="container mx-auto px-6 py-24 text-center">
+                <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tight">
+                    You Don't Need More "Marketing."
+                </h1>
+                <h2 class="text-4xl md:text-6xl font-black text-yellow-400 mb-8 tracking-tight">
+                    You Need a System That Works.
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-10">
+                    I’m Thabo, founder of Happy Hunter. I build production-ready, AI-driven marketing systems that turn chaotic budgets into predictable revenue. Specializing in conversion engineering, local discovery, and design-for-scale.
+                </p>
+                <a href="https://calendly.com/motsumitl/30min" target="_blank" rel="noopener noreferrer" class="inline-block px-8 py-4 rounded-lg text-lg font-bold btn-yellow">
+                    Schedule Your Free Systems Audit
+                </a>
+            </div>
+        </section>
+
+        <!-- AI GMB Audit Generator Section -->
+        <section id="ai-audit" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-2">🗺️ Free AI-Powered GMB Audit</h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                        This tool demonstrates our **Local Search & Visibility** expertise. Enter your business name and location to get a free, instant, AI-powered audit of your Google Business Profile.
+                    </p>
+                </div>
+                
+                <div class="max-w-3xl mx-auto bg-gray-50 p-8 rounded-lg shadow-xl border border-gray-200">
+                    <div class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="audit-business-name" class="block text-sm font-medium text-gray-700">Your Business Name</label>
+                                <input type="text" id="audit-business-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-yellow-400 focus:border-yellow-400 sm:text-sm" placeholder="e.g., Mama Zola's Catering">
+                            </div>
+                            <div>
+                                <label for="audit-business-location" class="block text-sm font-medium text-gray-700">Business Location (City/Suburb)</label>
+                                <input type="text" id="audit-business-location" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-yellow-400 focus:border-yellow-400 sm:text-sm" placeholder="e.g., Sandton, Johannesburg">
+                            </div>
+                        </div>
+                        <div>
+                            <button id="generate-audit-btn" class="btn-yellow w-full flex justify-center py-3 px-4 rounded-md shadow-sm text-lg font-bold">
+                                Run Basic GMB Audit
+                            </button>
+                        </div>
+                        <div id="ai-loading" class="flex justify-center flex-col items-center mt-4" style="display: none;" role="status" aria-live="polite">
+                            <div class="loader mb-2"></div>
+                            <p class="text-sm font-semibold text-gray-600">Analyzing your profile... this takes 10-20 seconds.</p>
+                        </div>
+                        <div id="audit-results-container" class="mt-8 border-t border-gray-200 pt-6" aria-live="polite">
+                            <!-- Results injected here -->
+                        </div>
+                        <div id="ai-error" class="text-red-600 text-center" style="display: none;" role="alert"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust & Social Proof Bar -->
+        <section id="trust-bar" class="bg-black py-12 text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl sm:text-4xl font-extrabold mb-3">Proven Systems. Quantifiable Results.</h2>
+                <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-12 mt-6">
+                    <div class="flex items-center">
+                        <span class="text-4xl text-yellow-400 mr-3">★★★★★</span>
+                        <span class="text-lg font-semibold">4.9/5 Stars on Google & TrustPilot</span>
+                    </div>
+                    <div class="hidden sm:block text-2xl text-gray-600">|</div>
+                    <blockquote class="text-lg italic max-w-md">
+                        "Thabo didn't just fix our profile; he built a lead engine. The automation is flawless."
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Services -->
+        <section id="services" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-2">Core Services</h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                        I build complete systems. Click a service to see related case studies.
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="services-grid">
+                    <!-- Services will be dynamically injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Case Studies -->
+        <section id="projects" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-8">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-2">Project Highlights</h2>
+                    <p id="filter-message-container" class="text-lg text-yellow-600 font-semibold mb-4" style="display: none;">
+                        Showing projects related to <span id="active-service-name" class="underline"></span>. 
+                        <button id="filter-reset-btn" class="text-gray-600 hover:text-gray-900 ml-2 text-sm" aria-label="Reset project filter">
+                            [Reset Filter]
+                        </button>
+                    </p>
+                    <p class="text-lg text-gray-600">Real-world problems, solved with intelligent systems.</p>
+                </div>
+                
+                <div id="case-study-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Case Studies will be dynamically injected here -->
+                </div>
+                
+                <div id="no-results-message" class="text-center text-gray-600 text-lg py-10" style="display: none;">
+                    No projects match this service category. <button id="no-results-reset" class="text-yellow-600 font-semibold underline" aria-label="Show All Projects">Show All Projects</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2">
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4">About the Founder</h2>
+                        <h3 class="text-2xl font-semibold text-yellow-600 mb-6">Thabo Leslie Motsumi, Systems Builder</h3>
+                        <div class="space-y-4 text-lg text-gray-600">
+                            <p>
+                                I’m a "systems thinker." My passion isn't just marketing; it's building the complete, end-to-end machine that drives predictable growth for your business.
+                            </p>
+                            <p>
+                                I translate high-level strategy into operationally executable assets. I have a bias for fast, iterative delivery and production-ready work. My goal is to create systems and templates that your team can operate with minimal friction.
+                            </p>
+                            <p>
+                                With deep local market fluency and a global best-practice toolkit, I specialize in creating culturally resonant, high-performance work for **South African SMEs and social ventures.**
+                            </p>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <img src="https://res.cloudinary.com/dka0498ns/image/upload/v1762926940/Gemini_Generated_Image_n574un574un574un_ylitql.png" alt="Thabo Leslie Motsumi, Founder of Happy Hunter" class="rounded-lg shadow-2xl w-full h-auto max-w-md mx-auto object-cover" style="aspect-ratio: 1/1;" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section id="contact" class="bg-black text-white">
+            <div class="container mx-auto px-6 py-20 text-center">
+                <h2 class="text-4xl font-bold mb-4">Tired of Guessing?</h2>
+                <p class="text-xl text-yellow-400 font-semibold mb-8">Let's build the system that makes your business grow.</p>
+                <a href="https://calendly.com/motsumitl/30min" target="_blank" rel="noopener noreferrer" class="inline-block px-8 py-4 rounded-lg text-lg font-bold btn-yellow">
+                    Schedule Your Free Systems Audit
+                </a>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 py-12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-8 mb-6">
+                <a href="mailto:Happyhunter99@protonmail.com" class="hover:text-yellow-400 transition">Happyhunter99@protonmail.com</a>
+                <span class="hidden sm:block">|</span>
+                <a href="https://happyhunter.beehiiv.com/" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 transition">Newsletter</a>
+                <span class="hidden sm:block">|</span>
+                <a href="https://wa.link/cdrsuc" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 transition">WhatsApp</a>
+            </div>
+            <p>&copy; 2025 Happy Hunter - Smart Marketing. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modals Container -->
+    <div id="modal-container"></div>
+
+    <!-- Floating WhatsApp Widget -->
+    <a href="https://wa.link/cdrsuc" target="_blank" rel="noopener noreferrer" aria-label="Contact us on WhatsApp" class="fixed bottom-6 right-6 z-[90] bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:scale-110 transform transition-all duration-300 ease-in-out">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8">
+            <path d="M16.75 13.99C16.5 13.86 15.2 13.21 14.95 13.11C14.7 13 14.5 12.97 14.3 13.22C14.1 13.47 13.6 14.02 13.45 14.22C13.3 14.42 13.15 14.44 12.9 14.31C12.65 14.19 11.8 13.91 10.75 13C9.9 12.27 9.25 11.39 9.1 11.19C8.95 10.99 9.05 10.87 9.17 10.75C9.29 10.63 9.42 10.46 9.57 10.31C9.72 10.16 9.77 10.06 9.87 9.86C9.97 9.66 9.92 9.49 9.87 9.36C9.82 9.24 9.27 7.96 9.02 7.36C8.77 6.76 8.52 6.81 8.37 6.81C8.22 6.81 8.02 6.84 7.82 6.84C7.62 6.84 7.32 6.91 7.07 7.16C6.82 7.41 6.17 8.01 6.17 9.21C6.17 10.41 7.1 11.56 7.22 11.71C7.34 11.86 9.27 14.79 12.1 16.21C12.82 16.56 13.36 16.71 13.78 16.84C14.4 17.01 14.95 16.94 15.38 16.59C15.85 16.21 16.53 15.51 16.73 15.26C16.93 15.01 17.13 14.91 17.03 14.79C16.93 14.67 16.85 14.62 16.75 13.99Z M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z M12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20Z"/>
+        </svg>
+    </a>
+
+    <script>
+        const servicesData = [
+            { id: 'strategy', icon: '🧠', name: 'Strategic Marketing', description: 'Brand strategy, messaging frameworks, audience segmentation, and Fractional CMO support.' },
+            { id: 'growth', icon: '📈', name: 'AI-Powered Growth', description: 'AI Search Optimization, App Store Optimization, Programmatic & Display, and content systems.' },
+            { id: 'automation', icon: '⚙️', name: 'Automation & Engagement', description: 'Email flows, WhatsApp/SMS campaigns, trigger-based workflows, and full CRM integration.' },
+            { id: 'funding', icon: '📊', name: 'Funder-Readiness', description: 'Proposal writing, budget modeling, impact reporting, and audit-ready formatting for securing funding.' },
+            { id: 'finance', icon: '🧾', name: 'Financial Compliance', description: 'Bookkeeping workflows, transaction categorization, audit prep, and POPIA-aligned data handling.' },
+            { id: 'creative', icon: '🎨', name: 'Creative Direction', description: 'Campaign creative, asset production oversight, photography direction, and Proposal visuals.' },
+            { id: 'systems', icon: '🛠️', name: 'Systems & Measurement', description: 'Marketing automation stacks, Ad Operations, KPI dashboards, and team upskilling.' }
+        ];
+
+        const projectData = [
+            {
+                id: 'custom-crafted-spaces',
+                title: 'Custom Crafted Spaces 2025',
+                logo: 'https://res.cloudinary.com/dka0498ns/image/upload/v1762928718/CCS_gqbogg.jpg',
+                tags: ['growth', 'systems', 'strategy'],
+                services: ['GMB Reinstatement', 'Website Build', 'Technical SEO'],
+                challenge: 'Lead flow dried up overnight after their primary lead source—their Google profile—was suspended.',
+                system: 'Conducted a full policy diagnosis, compiled all necessary legal documentation, managed the full appeals process with Google. Built a new, professional WordPress site, and implemented structured data and technical SEO to rebuild brand authority.',
+                outcome: 'Successfully reinstated the GMB profile, restoring the primary lead flow. The new website established a professional, high-trust brand image and a long-term asset for organic growth.'
+            },
+            {
+                id: 'profuse-beauty',
+                title: 'Profuse Beauty Cosmetics',
+                logo: 'https://res.cloudinary.com/dka0498ns/image/upload/v1762929115/Black_Gold_Elegant_Floral_Gala_Night_Invitation_Square_-_1_xpngal.png',
+                tags: ['strategy', 'automation', 'growth', 'creative'],
+                services: ['Social Media', 'Website SEO', 'Email Automation'],
+                challenge: 'A cosmetics brand in South Africa needing a complete digital system to drive sales.',
+                system: 'Developed a content strategy and managed channels to build an engaged community. Created compelling product descriptions, blog posts, and visual assets. Improved website SEO and built automated email flows.',
+                outcome: 'Established a cohesive brand presence, significantly improved organic search visibility, and created an automated sales funnel that generated revenue reliably.'
+            },
+            {
+                id: 'khongoloti',
+                title: 'Khongoloti Training Academy',
+                logo: 'https://res.cloudinary.com/dka0498ns/image/upload/v1762927791/logo_Khongoloti_1_e4k887.png',
+                tags: ['growth', 'strategy', 'systems'],
+                services: ['Online SEO Profile', 'Landing Page'],
+                challenge: 'A professional services organization needing to establish a foundational online presence.',
+                system: 'Developed their core SEO strategy, including keyword mapping and on-page optimization. Designed and built a fast, professional landing page focused on clear value propositions and lead capture.',
+                outcome: 'Established a professional digital "front door" that immediately built trust and began ranking on search engines, creating a new, reliable source of leads.'
+            },
+            {
+                id: 'integrated-wellth',
+                title: 'Integrated Wellth Solutions',
+                logo: 'https://res.cloudinary.com/dka0498ns/image/upload/v1762928010/A_Strategic_Funding_Roadmap_for_the_IGOCOEL_Institute_Aligning_a_Transformative_Model_with_Funder_Priorities_3_su2stf.jpg',
+                tags: ['strategy', 'growth', 'systems'],
+                services: ['Digital Marketing', 'Website Build', 'Landing Pages'],
+                challenge: 'A growth institute needing a comprehensive digital system to attract clients.',
+                system: 'Developed a full-funnel strategy to build authority and attract qualified leads. Built a professional website to serve as the central hub for content and designed high-converting landing pages for specific programs.',
+                outcome: 'Created a robust digital ecosystem that successfully launched the institute, establishing its credibility and generating a consistent flow of leads for its programs.'
+            }
+        ];
+
+        const generateAudit = async () => {
+            const businessName = document.getElementById('audit-business-name').value.trim();
+            const businessLocation = document.getElementById('audit-business-location').value.trim();
+            const generateBtn = document.getElementById('generate-audit-btn');
+            const loadingSpinner = document.getElementById('ai-loading');
+            const resultsContainer = document.getElementById('audit-results-container');
+            const errorDisplay = document.getElementById('ai-error');
+
+            if (!businessName || !businessLocation) {
+                errorDisplay.textContent = "Please enter both the business name and its location.";
+                errorDisplay.style.display = 'block';
+                return;
+            }
+
+            generateBtn.disabled = true;
+            generateBtn.textContent = "Architecting...";
+            loadingSpinner.style.display = 'flex';
+            errorDisplay.style.display = 'none';
+            resultsContainer.innerHTML = '';
+
+            const apiKey = process.env.API_KEY;
+            if (!apiKey) {
+                errorDisplay.textContent = "API Key is not configured.";
+                errorDisplay.style.display = 'block';
+                generateBtn.disabled = false;
+                generateBtn.textContent = "Run Basic GMB Audit";
+                loadingSpinner.style.display = 'none';
+                return;
+            }
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+            const systemPrompt = `You are an expert in Google Business Profile and local SEO. Analyze the search results for the user's business and provide a concise, expert audit. You MUST respond in a single, clean, valid JSON object format, without any markdown formatting. The JSON object must conform to this schema:
+{
+  "type": "OBJECT",
+  "properties": {
+    "business_name": { "type": "STRING" },
+    "audit_score": { "type": "NUMBER", "description": "A score from 0-100." },
+    "review_summary": { "type": "STRING", "description": "e.g., '4.5 stars from 120 reviews.'" },
+    "completeness": { "type": "STRING", "description": "Comment on profile completeness." },
+    "post_activity": { "type": "STRING", "description": "Comment on recent Google Posts." },
+    "quick_wins": {
+        "type": "ARRAY",
+        "description": "A list of 2-3 actionable recommendations.",
+        "items": { "type": "STRING" }
+    }
+  },
+  "required": ["business_name", "audit_score", "review_summary", "completeness", "post_activity", "quick_wins"]
+}
+Base your analysis *only* on the provided search results. If data is missing (e.g., no review count), state that it was 'Not found' or 'N/A' and adjust the score down.`;
+            
+            const userQuery = `Find the Google Business Profile for "${businessName}" in "${businessLocation}". Perform a basic audit of their GMB presence. Look for: (1) Review count and average rating, (2) If they have recent Google Posts (in the last 30 days), (3) If their profile information (name, address, phone) seems complete, (4) Any red flags (like bad reviews or no photos).`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                tools: [{googleSearch: {}}],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            const fetchWithBackoff = async (payload, retries = 3, delay = 1000) => {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    if (retries > 0) {
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        return fetchWithBackoff(payload, retries - 1, delay * 2);
+                    } else {
+                        throw error;
+                    }
+                }
+            };
+
+            try {
+                const result = await fetchWithBackoff(payload);
+                const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                
+                if (jsonText) {
+                    const cleanJsonText = jsonText.replace(/^```json\s*|```\s*$/g, '').trim();
+                    const analysis = JSON.parse(cleanJsonText);
+                    
+                    let quickWinsHtml = analysis.quick_wins.map(win => `<li class="warn">${win}</li>`).join('');
+
+                    resultsContainer.innerHTML = \`
+                        <h4 class="text-2xl font-bold text-gray-900 mb-4 text-center">Audit for: \${analysis.business_name}</h4>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="audit-score-card">
+                                <p class="text-lg font-semibold text-yellow-400">Overall Score</p>
+                                <p class="text-6xl font-black">\${analysis.audit_score}<span class="text-2xl">/100</span></p>
+                            </div>
+                            <div class="md:col-span-2 bg-gray-100 p-6 rounded-lg">
+                                <h5 class="font-bold text-lg mb-3">Key Findings:</h5>
+                                <ul class="audit-list space-y-2 text-gray-700">
+                                    <li>\${analysis.review_summary}</li>
+                                    <li>\${analysis.completeness}</li>
+                                    <li>\${analysis.post_activity}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <h5 class="font-bold text-lg mb-3 text-red-600">Actionable Quick Wins:</h5>
+                            <ul class="audit-list space-y-2 text-gray-700">
+                                \${quickWinsHtml}
+                            </ul>
+                        </div>
+                        <div class="mt-6 text-center p-4 bg-yellow-100 border border-yellow-300 rounded-lg">
+                            <p class="font-semibold">This is a basic audit. A full system build can fix these issues and turn your GMB profile into a lead-generation machine.</p>
+                            <a href="https://calendly.com/motsumitl/30min" target="_blank" rel="noopener noreferrer" class="inline-block px-6 py-2 rounded-md text-sm mt-3 btn-yellow">
+                                Schedule Full Audit
+                            </a>
+                        </div>
+                    \`;
+                } else {
+                    throw new Error("No valid content received from API.");
+                }
+                
+            } catch (error) {
+                console.error("Error during GMB Audit:", error);
+                errorDisplay.textContent = "An error occurred, or the business could not be found with that name/location. Please try again.";
+                errorDisplay.style.display = 'block';
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.textContent = "Run Basic GMB Audit";
+                loadingSpinner.style.display = 'none';
+            }
+        };
+
+        const filterProjects = (filterTag, element) => {
+            const caseStudyCards = document.querySelectorAll('.case-study-card');
+            let hasVisibleProjects = false;
+
+            document.querySelectorAll('.service-card').forEach(card => card.classList.remove('active'));
+            if (element) element.classList.add('active');
+            
+            const serviceName = element.getAttribute('data-name');
+            document.getElementById('active-service-name').textContent = serviceName;
+            document.getElementById('filter-message-container').style.display = 'block';
+
+            caseStudyCards.forEach(card => {
+                const tags = card.getAttribute('data-tags').split(' ');
+                if (tags.includes(filterTag)) {
+                    card.style.display = 'block';
+                    hasVisibleProjects = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('no-results-message').style.display = hasVisibleProjects ? 'none' : 'block';
+            document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+        };
+        
+        const resetFilters = () => {
+            document.querySelectorAll('.case-study-card').forEach(card => card.style.display = 'block');
+            document.querySelectorAll('.service-card').forEach(card => card.classList.remove('active'));
+            document.getElementById('filter-message-container').style.display = 'none';
+            document.getElementById('no-results-message').style.display = 'none';
+        };
+
+        class Modal {
+            constructor(modalElement) {
+                this.modal = modalElement;
+                this.closeButton = this.modal.querySelector('.modal-close');
+                this.focusableElements = Array.from(this.modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
+                this.firstFocusable = this.focusableElements[0] || this.closeButton;
+                this.lastFocusable = this.focusableElements[this.focusableElements.length - 1] || this.closeButton;
+                this.open = this.open.bind(this);
+                this.close = this.close.bind(this);
+                this.handleKeyDown = this.handleKeyDown.bind(this);
+                this.trapFocus = this.trapFocus.bind(this);
+                this.closeButton.addEventListener('click', this.close);
+                this.modal.addEventListener('click', (e) => e.target === this.modal && this.close());
+            }
+
+            open(triggerElement) {
+                this.triggerElement = triggerElement;
+                document.body.style.overflow = 'hidden';
+                this.modal.style.display = 'block';
+                this.firstFocusable?.focus();
+                window.addEventListener('keydown', this.handleKeyDown);
+            }
+
+            close() {
+                this.modal.style.display = 'none';
+                document.body.style.overflow = '';
+                this.triggerElement?.focus();
+                window.removeEventListener('keydown', this.handleKeyDown);
+            }
+
+            handleKeyDown(e) {
+                if (e.key === 'Escape') this.close();
+                if (e.key === 'Tab') this.trapFocus(e);
+            }
+
+            trapFocus(e) {
+                if (this.focusableElements.length === 0) { e.preventDefault(); return; }
+                if (e.shiftKey) { 
+                    if (document.activeElement === this.firstFocusable) { this.lastFocusable.focus(); e.preventDefault(); }
+                } else {
+                    if (document.activeElement === this.lastFocusable) { this.firstFocusable.focus(); e.preventDefault(); }
+                }
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const servicesGrid = document.getElementById('services-grid');
+            const caseStudyGrid = document.getElementById('case-study-grid');
+            const modalContainer = document.getElementById('modal-container');
+            const modals = {};
+
+            // Render Services
+            servicesGrid.innerHTML = servicesData.map(service => \`
+                <div class="service-card" role="button" tabindex="0" data-filter="\${service.id}" data-name="\${service.name}">
+                    <div class="text-3xl">\${service.icon}</div>
+                    <h3 class="text-xl font-bold text-gray-900 mt-4 mb-2">\${service.name}</h3>
+                    <p class="text-gray-600">\${service.description}</p>
+                </div>
+            \`).join('');
+
+            // Render Case Studies
+            caseStudyGrid.innerHTML = projectData.map(project => \`
+                <div class="case-study-card" data-tags="\${project.tags.join(' ')}">
+                    <div class="p-6">
+                        <img src="\${project.logo}" alt="\${project.title} Logo" class="w-12 h-12 object-contain mb-4 rounded-full border border-gray-200 p-1" loading="lazy">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">\${project.title}</h3>
+                        <p class="text-gray-600 mb-4 h-24 overflow-hidden">\${project.challenge}</p>
+                        <div class="mb-4 flex flex-wrap gap-1">
+                            \${project.services.slice(0, 3).map(s => \`<span class="case-study-card-tag">\${s}</span>\`).join('')}
+                        </div>
+                        <button class="text-yellow-600 font-semibold" data-modal-id="\${project.id}-modal">
+                            Learn More &rarr;
+                        </button>
+                    </div>
+                </div>
+            \`).join('');
+
+            // Render Modals
+            modalContainer.innerHTML = projectData.map(project => \`
+                <div id="\${project.id}-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="\${project.id}-title">
+                    <div class="modal-content">
+                        <button class="modal-close" aria-label="Close dialog">&times;</button>
+                        <h2 id="\${project.id}-title" class="text-2xl font-bold text-gray-900 mb-4">\${project.title}</h2>
+                        <img src="\${project.logo}" alt="\${project.title} Logo" class="w-16 h-16 object-contain mb-4 rounded-full border border-gray-200 p-1" loading="lazy">
+                        <div class="space-y-4">
+                           <p><strong>The Challenge:</strong> \${project.challenge}</p>
+                           <p><strong>The System I Built:</strong> \${project.system}</p>
+                           <p><strong>The Result:</strong> \${project.outcome}</p>
+                        </div>
+                    </div>
+                </div>
+            \`).join('');
+
+            // Initialize Modals
+            document.querySelectorAll('.modal').forEach(m => modals[m.id] = new Modal(m));
+            
+            // Event Listeners
+            document.getElementById('generate-audit-btn').addEventListener('click', generateAudit);
+            document.getElementById('filter-reset-btn').addEventListener('click', resetFilters);
+            document.getElementById('no-results-reset').addEventListener('click', resetFilters);
+
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.addEventListener('click', () => filterProjects(card.dataset.filter, card));
+            });
+
+            document.querySelectorAll('[data-modal-id]').forEach(trigger => {
+                trigger.addEventListener('click', (e) => {
+                    const modal = modals[e.currentTarget.dataset.modalId];
+                    if (modal) modal.open(e.currentTarget);
+                });
+            });
+
+            const menuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuButton.addEventListener('click', () => {
+                const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+                menuButton.setAttribute('aria-expanded', !isExpanded);
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuButton.setAttribute('aria-expanded', 'false');
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
