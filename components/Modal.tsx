@@ -1,66 +1,61 @@
-
-import React, { useEffect, ReactNode } from 'react';
+import React, { useEffect, useRef } from 'react';
+// FIX: Corrected import path for types to avoid module resolution issue.
+import type { Project } from '../types/index';
 
 interface ModalProps {
-    isOpen: boolean;
+    project: Project;
     onClose: () => void;
-    children: ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const Modal: React.FC<ModalProps> = ({ project, onClose }) => {
+    const modalRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
-        const handleEsc = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
                 onClose();
             }
         };
 
-        if (isOpen) {
-            document.body.style.overflow = 'hidden';
-            window.addEventListener('keydown', handleEsc);
-        } else {
-            document.body.style.overflow = '';
-        }
+        const handleClickOutside = (e: MouseEvent) => {
+            if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+                onClose();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.body.style.overflow = 'hidden';
+        
+        // Use timeout to prevent immediate close on click that opens it
+        const timeoutId = setTimeout(() => {
+            document.addEventListener('mousedown', handleClickOutside);
+        }, 0);
 
         return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('mousedown', handleClickOutside);
             document.body.style.overflow = '';
-            window.removeEventListener('keydown', handleEsc);
+            clearTimeout(timeoutId);
         };
-    }, [isOpen, onClose]);
-
-    if (!isOpen) {
-        return null;
-    }
+    }, [onClose]);
 
     return (
         <div 
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm"
-            onClick={onClose}
-            role="dialog"
-            aria-modal="true"
+            className="modal" 
+            role="dialog" 
+            aria-modal="true" 
+            aria-labelledby={`${project.id}-title`}
         >
-            <div 
-                className="relative bg-white m-4 sm:m-8 p-8 border border-gray-200 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl shadow-2xl animate-fadeIn"
-                onClick={(e) => e.stopPropagation()}
-            >
-                <button 
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 text-3xl font-bold leading-none transition-colors"
-                    onClick={onClose}
-                    aria-label="Close"
-                >
-                    &times;
-                </button>
-                {children}
+            <div className="modal-content" ref={modalRef}>
+                <button className="modal-close" aria-label="Close dialog" onClick={onClose}>&times;</button>
+                <h2 id={`${project.id}-title`} className="text-2xl font-bold text-gray-900 mb-4">{project.title}</h2>
+                <img src={project.logo} alt={`${project.title} Logo`} className="w-16 h-16 object-contain mb-4 rounded-full border border-gray-200 p-1" loading="lazy" />
+                <div className="space-y-4">
+                   <p><strong>The Challenge:</strong> {project.challenge}</p>
+                   <p><strong>The System I Built:</strong> {project.system}</p>
+                   <p><strong>The Result:</strong> {project.outcome}</p>
+                </div>
             </div>
-            <style>{`
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: translateY(-20px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                .animate-fadeIn {
-                    animation: fadeIn 0.3s ease-out;
-                }
-            `}</style>
         </div>
     );
 };

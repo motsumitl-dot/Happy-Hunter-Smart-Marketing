@@ -1,33 +1,14 @@
-
 import React from 'react';
-import { Service } from '../types';
-
-interface ServiceCardProps {
-    service: Service;
-    isActive: boolean;
-    onClick: () => void;
-}
-
-const ServiceCard: React.FC<ServiceCardProps> = ({ service, isActive, onClick }) => {
-    return (
-        <div 
-            className={`service-card ${isActive ? 'active' : ''}`} 
-            onClick={onClick}
-        >
-            <div className="icon">{service.icon}</div>
-            <h3 className="text-xl font-bold text-gray-900 mt-4 mb-2">{service.name}</h3>
-            <p className="text-gray-600">{service.description}</p>
-        </div>
-    );
-};
+// FIX: Corrected import path for types to avoid module resolution issue.
+import type { Service } from '../types/index';
 
 interface ServicesProps {
     services: Service[];
+    onServiceClick: (filter: string) => void;
     activeFilter: string | null;
-    onFilterSelect: (filter: string) => void;
 }
 
-const Services: React.FC<ServicesProps> = ({ services, activeFilter, onFilterSelect }) => {
+const Services: React.FC<ServicesProps> = ({ services, onServiceClick, activeFilter }) => {
     return (
         <section id="services" className="py-20 bg-gray-50">
             <div className="container mx-auto px-6">
@@ -38,14 +19,20 @@ const Services: React.FC<ServicesProps> = ({ services, activeFilter, onFilterSel
                     </p>
                 </div>
                 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {services.map((service, index) => (
-                        <ServiceCard 
-                            key={`${service.filter}-${index}`}
-                            service={service}
-                            isActive={activeFilter === service.filter}
-                            onClick={() => onFilterSelect(service.filter)}
-                        />
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="services-grid">
+                    {services.map(service => (
+                        <div 
+                            key={service.id}
+                            className={`service-card flex flex-col h-full ${activeFilter === service.filterId ? 'active' : ''}`}
+                            role="button" 
+                            tabIndex={0} 
+                            onClick={() => onServiceClick(service.filterId)}
+                            onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onServiceClick(service.filterId)}
+                        >
+                            <div className="text-3xl text-yellow-400">{service.icon}</div>
+                            <h3 className="text-xl font-bold text-gray-900 mt-4 mb-2">{service.name}</h3>
+                            <p className="text-gray-600">{service.description}</p>
+                        </div>
                     ))}
                 </div>
             </div>
