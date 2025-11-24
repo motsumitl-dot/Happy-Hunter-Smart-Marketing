@@ -1,20 +1,17 @@
-import { GoogleGenAI, Type } from "@google/genai";
-// FIX: Corrected import path for types to avoid module resolution issue.
-import type { AuditResult } from '../types/index';
+import { GoogleGenAI } from "@google/genai";
+import { AuditResponse } from '../types';
 
-export const generateGmbAudit = async (businessName: string, businessLocation: string): Promise<AuditResult> => {
-    if (!process.env.API_KEY) {
-        throw new Error("API Key is not configured.");
-    }
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
 
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
-    const systemPrompt = `You are Happy Hunter, a holistic digital marketing expert. 
+export const generateGmbAudit = async (businessName: string, location: string): Promise<AuditResponse> => {
+    
+    const systemInstruction = `You are Happy Hunter, a holistic digital marketing expert. 
             Perform a "Short. Sharp. Client-friendly" GMB Audit based on the user's input. 
+            You MUST return a JSON object. 
             For each of the 5 checks (Visibility, Trust, Conversion, Activity, Competitor Gap), provide a specific, critical finding based on search results. 
             Be direct. If data is missing (e.g., no review count), state that it was 'Not found' or 'N/A' and adjust the score down.`;
-            
-    const userQuery = `Perform a Basic Google Business Profile Audit for "${businessName}" in "${businessLocation}".
+    
+    const userQuery = `Perform a Basic Google Business Profile Audit for "${businessName}" in "${location}".
             
             1. **Visibility Check:** Check if main category is correct, name is clean (no keyword stuffing), and address/website link exists.
             2. **Trust Check:** Check review count/rating and recency of photos.
@@ -23,42 +20,36 @@ export const generateGmbAudit = async (businessName: string, businessLocation: s
             5. **Competitor Gap:** Compare them briefly to 1-2 top competitors in the same area/niche.
             
             Provide a score out of 100.
-            For "The Win", summarize exactly why fixing these gaps will increase their revenue.`;
+            For "The Win", summarize exactly why fixing these gaps will increase their revenue.
+            
+            Return the result as a raw JSON object with keys: business_name, audit_score, visibility_finding, trust_finding, conversion_finding, activity_finding, competitor_finding, the_win.`;
 
     try {
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",
-            contents: userQuery,
+            contents: [{ parts: [{ text: userQuery }] }],
             config: {
-                tools: [{googleSearch: {}}],
-                systemInstruction: systemPrompt,
-                responseMimeType: "application/json",
-                responseSchema: {
-                    type: Type.OBJECT,
-                    properties: {
-                        business_name: { type: Type.STRING },
-                        audit_score: { type: Type.NUMBER },
-                        visibility_finding: { type: Type.STRING },
-                        trust_finding: { type: Type.STRING },
-                        conversion_finding: { type: Type.STRING },
-                        activity_finding: { type: Type.STRING },
-                        competitor_finding: { type: Type.STRING },
-                        the_win: { type: Type.STRING }
-                    },
-                    required: ["business_name", "audit_score", "visibility_finding", "trust_finding", "conversion_finding", "activity_finding", "competitor_finding", "the_win"]
-                }
-            },
+                systemInstruction: systemInstruction,
+                tools: [{ googleSearch: {} }]
+            }
         });
-
-        const jsonText = response.text;
         
-        if (jsonText) {
-            return JSON.parse(jsonText) as AuditResult;
-        } else {
-            throw new Error("No valid content received from API.");
+        const jsonText = response.text?.trim() || "{}";
+        
+        // Sanitize JSON if it comes wrapped in markdown
+        const cleanedJson = jsonText.replace(/```json/g, '').replace(/```/g, '');
+        
+        const parsedResponse: AuditResponse = JSON.parse(cleanedJson);
+        
+        // Attach grounding metadata if available
+        if (response.candidates?.[0]?.groundingMetadata) {
+            parsedResponse.groundingMetadata = response.candidates[0].groundingMetadata;
         }
+
+        return parsedResponse;
+
     } catch (error) {
-        console.error("Error during GMB Audit:", error);
+        console.error("Error calling Gemini API:", error);
         throw new Error("We couldn't find enough public data for a deeper audit. This usually means your visibility is critically low. Please book a call.");
     }
 };

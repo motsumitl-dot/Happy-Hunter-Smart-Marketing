@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 const TrustBar: React.FC = () => {
@@ -12,7 +13,7 @@ const TrustBar: React.FC = () => {
                     </div>
                     <div className="hidden sm:block text-2xl text-gray-600">|</div>
                     <blockquote className="text-lg italic max-w-md">
-                        "Thabo didn't just fix our profile; he built a lead engine. The automation is flawless."
+                        "Happy Hunter didn't just fix our profile; they built a lead engine. The automation is flawless."
                     </blockquote>
                 </div>
             </div>

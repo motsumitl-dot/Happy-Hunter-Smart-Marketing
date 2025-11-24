@@ -2,7 +2,7 @@ import React from 'react';
 
 const Hero: React.FC = () => {
     return (
-        <section id="hero" className="bg-black text-white" style={{ background: 'linear-gradient(45deg, #1a1a1a 0%, #000000 100%)' }}>
+        <section className="hero-bg text-white">
             <div className="container mx-auto px-6 py-24 text-center">
                 <h1 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
                     You Don't Need More "Marketing."
@@ -13,7 +13,7 @@ const Hero: React.FC = () => {
                 <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-10">
                     I’m Happy Hunter. I build holistic, AI-driven marketing systems that help South African SMEs win. From GMB optimization to full-scale digital automation.
                 </p>
-                <a href="https://calendly.com/motsumitl/30min" target="_blank" rel="noopener noreferrer" className="inline-block px-8 py-4 rounded-lg text-lg font-bold btn-yellow">
+                <a href="https://calendly.com/motsumitl/30min" target="_blank" rel="noopener noreferrer" className="btn-yellow px-8 py-4 rounded-lg text-lg font-bold">
                     Schedule Your Free Systems Audit
                 </a>
             </div>

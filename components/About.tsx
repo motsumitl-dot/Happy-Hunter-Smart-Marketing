@@ -2,21 +2,21 @@ import React from 'react';
 
 const About: React.FC = () => {
     return (
-        <section id="about" className="py-20">
+        <section id="about" className="py-20 bg-gray-50">
             <div className="container mx-auto px-6">
                 <div className="flex flex-col md:flex-row items-center gap-12">
                     <div className="md:w-1/2">
-                        <h2 className="text-4xl font-bold text-gray-900 mb-4">About the Founder</h2>
-                        <h3 className="text-2xl font-semibold text-yellow-600 mb-6">Thabo Leslie Motsumi, Systems Builder</h3>
+                        <h2 className="text-4xl font-bold text-gray-900 mb-4">About Happy Hunter</h2>
+                        <h3 className="text-2xl font-semibold text-yellow-600 mb-6">Thabo Leslie Motsumi, Founder & Systems Builder</h3>
                         <div className="space-y-4 text-lg text-gray-600">
                             <p>
-                                I’m a "systems thinker." My passion isn't just marketing; it's building the complete, end-to-end machine that drives predictable growth for your business.
+                                I’m a "systems thinker." My passion isn't just marketing; it's building the complete, end-to-end machine that drives predictable growth.
                             </p>
                             <p>
-                                I translate high-level strategy into operationally executable assets. I have a bias for fast, iterative delivery and production-ready work. My goal is to create systems and templates that your team can operate with minimal friction.
+                                I combine technical skills in <strong>Local SEO and Automation</strong> with the strategic power of <strong>Inbound Marketing</strong>. I don't just run ads; I build the infrastructure that turns traffic into revenue.
                             </p>
                             <p>
-                                With deep local market fluency and a global best-practice toolkit, I specialize in creating culturally resonant, high-performance work for <strong>South African SMEs and social ventures.</strong>
+                                Specializing in <strong>South African SMEs and social ventures</strong>, I help businesses that are tired of "fluff" and ready to win.
                             </p>
                         </div>
                     </div>
