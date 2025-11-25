@@ -94,7 +94,12 @@ const Projects: React.FC<ProjectsProps> = ({ activeFilter, onFilterReset, active
                 <Modal isOpen={!!openModalId} onClose={closeModal}>
                      <h2 id={`modal-${activeStudy.id}-title`} className="text-2xl font-bold text-gray-900 mb-4">{activeStudy.title}</h2>
                      {activeStudy.logo ? (
-                        <img src={activeStudy.logo} alt={`${activeStudy.title} Logo`} className="w-full h-auto rounded-lg mb-4 shadow-md object-contain max-h-80 bg-white p-2" loading="lazy" />
+                        <img 
+                            src={activeStudy.logo} 
+                            alt={`${activeStudy.title} Logo`} 
+                            className="block mx-auto max-w-full h-auto max-h-80 rounded-lg mb-4 shadow-md object-contain bg-white p-2" 
+                            loading="lazy" 
+                        />
                      ): (
                         <div className="w-full h-80 rounded-lg mb-4 shadow-md bg-yellow-400 flex items-center justify-center p-4">
                              <span className="text-gray-800 text-2xl font-bold text-center">{activeStudy.title}</span>

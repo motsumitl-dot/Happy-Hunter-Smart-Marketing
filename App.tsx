@@ -15,9 +15,24 @@ const App: React.FC = () => {
     const [activeFilter, setActiveFilter] = useState<string | null>(null);
     const [showCookieBanner, setShowCookieBanner] = useState(false);
 
+    const initializeTracking = () => {
+        const gaScript = document.getElementById('ga-script');
+        if (gaScript && !gaScript.innerHTML) {
+            gaScript.innerHTML = `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'YOUR_MEASUREMENT_ID_HERE');
+            `;
+            console.log('[Compliance Check] Analytics Initialized. Tracking is Active.');
+        }
+    };
+
     useEffect(() => {
         const consent = localStorage.getItem('cookiesAccepted');
-        if (consent !== 'true') {
+        if (consent === 'true') {
+            initializeTracking();
+        } else {
             setShowCookieBanner(true);
         }
     }, []);
@@ -25,6 +40,7 @@ const App: React.FC = () => {
     const handleAcceptCookies = () => {
         localStorage.setItem('cookiesAccepted', 'true');
         setShowCookieBanner(false);
+        initializeTracking();
     };
 
     const handleFilterSelect = (filter: string | null) => {

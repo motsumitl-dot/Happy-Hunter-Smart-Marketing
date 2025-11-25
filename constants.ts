@@ -59,7 +59,7 @@ export const caseStudies: CaseStudy[] = [
         logo: 'https://res.cloudinary.com/dka0498ns/image/upload/v1762929115/Black_Gold_Elegant_Floral_Gala_Night_Invitation_Square_-_1_xpngal.png',
         tags: ['creative', 'strategy', 'automation'],
         description: 'Invisible to online shoppers and no retention strategy.',
-        tagsDisplay: ['Social Media', 'Content Strategy', 'Email Automation'],
+        tagsDisplay: ['Social Media Marketing', 'Content Strategy & Organic SEO', 'Email & Automation'],
         modalContent: {
             challenge: 'Invisible to online shoppers and no retention strategy.',
             system: [
@@ -76,7 +76,7 @@ export const caseStudies: CaseStudy[] = [
         logo: 'https://res.cloudinary.com/dka0498ns/image/upload/v1762928718/CCS_gqbogg.jpg',
         tags: ['growth', 'systems'],
         description: 'Suspended GMB profile = Zero leads.',
-        tagsDisplay: ['Local Search & GMB', 'Analytics'],
+        tagsDisplay: ['Local Search & GMB', 'Analytics & Conversion'],
         modalContent: {
             challenge: 'Suspended GMB profile = Zero leads.',
             system: [
@@ -109,7 +109,7 @@ export const caseStudies: CaseStudy[] = [
         logo: '',
         tags: ['creative', 'strategy'],
         description: 'Low brand awareness in niche market.',
-        tagsDisplay: ['Social Media Marketing', 'Content Strategy'],
+        tagsDisplay: ['Social Media Marketing', 'Content Strategy & Organic SEO'],
         modalContent: {
             challenge: 'Low brand awareness in niche market.',
             system: [
@@ -125,7 +125,7 @@ export const caseStudies: CaseStudy[] = [
         logo: 'https://res.cloudinary.com/dka0498ns/image/upload/v1762927469/GKY_xjxyuy.jpg',
         tags: ['strategy'],
         description: 'Undefined brand in a crowded market.',
-        tagsDisplay: ['Inbound Marketing', 'Content Strategy'],
+        tagsDisplay: ['Inbound Marketing', 'Content Strategy & Organic SEO'],
         modalContent: {
             challenge: 'Undefined brand in a crowded market.',
             system: [
