@@ -54,7 +54,7 @@ export const services: Service[] = [
 
 export const caseStudies: CaseStudy[] = [
     {
-        id: 'profuse',
+        id: 'profuse-beauty',
         title: 'Profuse Beauty Cosmetics',
         logo: 'https://res.cloudinary.com/dka0498ns/image/upload/v1762929115/Black_Gold_Elegant_Floral_Gala_Night_Invitation_Square_-_1_xpngal.png',
         tags: ['creative', 'strategy', 'automation'],
@@ -71,7 +71,7 @@ export const caseStudies: CaseStudy[] = [
         }
     },
     {
-        id: 'custom',
+        id: 'custom-crafted-spaces',
         title: 'Custom Crafted Spaces 2025',
         logo: 'https://res.cloudinary.com/dka0498ns/image/upload/v1762928718/CCS_gqbogg.jpg',
         tags: ['growth', 'systems'],
@@ -91,7 +91,7 @@ export const caseStudies: CaseStudy[] = [
         id: 'khongoloti',
         title: 'Khongoloti Training Academy',
         logo: 'https://res.cloudinary.com/dka0498ns/image/upload/v1762927791/logo_Khongoloti_1_e4k887.png',
-        tags: ['growth'],
+        tags: ['growth', 'growth'], // Local Search & GMB, Paid Media
         description: 'No digital footprint for student enrollment.',
         tagsDisplay: ['Local Search & GMB', 'Paid Media (PPC)'],
         modalContent: {
@@ -106,7 +106,7 @@ export const caseStudies: CaseStudy[] = [
     {
         id: 'gamazine',
         title: 'Gamazine & Glamour Coat',
-        logo: '',
+        logo: '', // Intentionally empty to trigger Yellow Placeholder as per HTML Modal structure
         tags: ['creative', 'strategy'],
         description: 'Low brand awareness in niche market.',
         tagsDisplay: ['Social Media Marketing', 'Content Strategy & Organic SEO'],
@@ -120,10 +120,10 @@ export const caseStudies: CaseStudy[] = [
         }
     },
     {
-        id: 'gae-yoga',
+        id: 'gae-kemetic-yoga',
         title: 'Gae Kemetic Yoga',
         logo: 'https://res.cloudinary.com/dka0498ns/image/upload/v1762927469/GKY_xjxyuy.jpg',
-        tags: ['strategy'],
+        tags: ['strategy', 'strategy'], // Inbound Marketing, Content Strategy
         description: 'Undefined brand in a crowded market.',
         tagsDisplay: ['Inbound Marketing', 'Content Strategy & Organic SEO'],
         modalContent: {
@@ -136,10 +136,10 @@ export const caseStudies: CaseStudy[] = [
         }
     },
     {
-        id: 'wellth',
+        id: 'integrated-wellth',
         title: 'Integrated Wellth Solutions',
         logo: 'https://res.cloudinary.com/dka0498ns/image/upload/v1762928010/A_Strategic_Funding_Roadmap_for_the_IGOCOEL_Institute_Aligning_a_Transformative_Model_with_Funder_Priorities_3_su2stf.jpg',
-        tags: ['strategy', 'growth'],
+        tags: ['strategy', 'growth'], // Inbound Marketing, Paid Media
         description: 'New institute needing lead generation.',
         tagsDisplay: ['Inbound Marketing', 'Paid Media (PPC)'],
         modalContent: {

@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { caseStudies } from '../constants';
 import { CaseStudy } from '../types';
@@ -17,15 +16,15 @@ const CaseStudyCard: React.FC<CaseStudyCardProps> = ({ study, onLearnMore }) => 
                      {study.logo ? (
                         <img src={study.logo} alt={`${study.title} Logo`} className="w-12 h-12 object-contain mb-4 rounded-full border border-gray-200 p-1" loading="lazy" />
                     ) : (
-                        <div className="w-12 h-12 mb-4 flex items-center justify-center">
-                           <span className="text-3xl text-yellow-500">🧱</span>
+                        <div className="w-12 h-12 mb-4 flex items-center justify-center bg-yellow-100 rounded-full border border-yellow-200">
+                           <span className="text-xl">🧱</span>
                         </div>
                     )}
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">{study.title}</h3>
                     <p className="text-gray-600 mb-4">{study.description}</p>
                     <div className="mb-4">
-                        {study.tagsDisplay.map(tag => (
-                            <span key={tag} className="case-study-card-tag">{tag}</span>
+                        {study.tagsDisplay.map((tag, idx) => (
+                            <span key={idx} className="case-study-card-tag">{tag}</span>
                         ))}
                     </div>
                 </div>
@@ -101,7 +100,7 @@ const Projects: React.FC<ProjectsProps> = ({ activeFilter, onFilterReset, active
                             loading="lazy" 
                         />
                      ): (
-                        <div className="w-full h-80 rounded-lg mb-4 shadow-md bg-yellow-400 flex items-center justify-center p-4">
+                        <div className="w-full h-40 rounded-lg mb-4 shadow-md bg-yellow-400 flex items-center justify-center p-4">
                              <span className="text-gray-800 text-2xl font-bold text-center">{activeStudy.title}</span>
                         </div>
                      )}
@@ -115,7 +114,13 @@ const Projects: React.FC<ProjectsProps> = ({ activeFilter, onFilterReset, active
                            const parts = item.split(':');
                            return (
                                <li key={index}>
-                                   <span className="font-semibold">{parts[0]}:</span>{parts.slice(1).join(':')}
+                                   {parts.length > 1 ? (
+                                        <>
+                                            <span className="font-semibold">{parts[0]}:</span>{parts.slice(1).join(':')}
+                                        </>
+                                   ) : (
+                                       item
+                                   )}
                                 </li>
                            );
                        })}

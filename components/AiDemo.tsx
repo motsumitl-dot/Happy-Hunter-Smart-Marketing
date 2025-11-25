@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { generateGmbAudit } from '../services/geminiService';
 import { AuditResponse } from '../types';
+
+declare global {
+  interface Window {
+    Chart: any;
+  }
+}
 
 const AiDemo: React.FC = () => {
     const [businessName, setBusinessName] = useState('');
@@ -8,6 +15,8 @@ const AiDemo: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [result, setResult] = useState<AuditResponse | null>(null);
+    const chartRef = useRef<HTMLCanvasElement>(null);
+    const chartInstance = useRef<any>(null);
 
     const handleGenerate = async () => {
         if (!businessName || !location) {
@@ -29,11 +38,72 @@ const AiDemo: React.FC = () => {
         }
     };
 
-    const getScoreColor = (score: number) => {
+    const getScoreColorHex = (score: number) => {
+        if (score > 70) return '#16a34a'; // green-600
+        if (score > 40) return '#facc15'; // yellow-400
+        return '#dc2626'; // red-600
+    };
+
+    const getScoreColorClass = (score: number) => {
         if (score > 70) return 'text-green-600';
         if (score > 40) return 'text-yellow-400';
         return 'text-red-600';
     };
+
+    useEffect(() => {
+        if (result && chartRef.current && window.Chart) {
+            // Destroy existing chart if it exists
+            if (chartInstance.current) {
+                chartInstance.current.destroy();
+            }
+
+            const ctx = chartRef.current.getContext('2d');
+            if (ctx) {
+                const score = result.audit_score;
+                const color = getScoreColorHex(score);
+                const remainder = 100 - score;
+
+                chartInstance.current = new window.Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Score', 'Potential'],
+                        datasets: [{
+                            data: [score, remainder],
+                            backgroundColor: [
+                                color,
+                                '#e5e7eb' // gray-200
+                            ],
+                            borderWidth: 0,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        cutout: '75%',
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: false
+                            }
+                        },
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Cleanup function
+        return () => {
+             if (chartInstance.current) {
+                chartInstance.current.destroy();
+            }
+        };
+    }, [result]);
 
     return (
         <section id="ai-demo" className="py-20 bg-white">
@@ -91,12 +161,20 @@ const AiDemo: React.FC = () => {
                         
                         {result && (
                             <div className="mt-8 bg-white rounded-xl border-2 border-black shadow-lg overflow-hidden animate-fadeIn">
-                                <div className="bg-black text-white p-6 text-center">
-                                    <h4 className="text-2xl font-bold mb-2">Audit Report: {result.business_name}</h4>
-                                    <div className="flex justify-center items-baseline space-x-2">
-                                        <span className="text-gray-300 text-lg font-medium">System Health Score:</span>
-                                        <span className={`text-5xl font-black ${getScoreColor(result.audit_score)}`}>{result.audit_score}/100</span>
+                                <div className="bg-black text-white p-6 relative">
+                                    <h4 className="text-2xl font-bold mb-4 text-center">Audit Report: {result.business_name}</h4>
+                                    
+                                    <div className="flex justify-center items-center relative h-48 mb-2">
+                                         {/* Chart Canvas */}
+                                        <canvas ref={chartRef} className="z-10 relative"></canvas>
+                                        
+                                        {/* Score Text Centered in Donut */}
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center pt-2">
+                                            <span className="text-gray-400 text-xs uppercase tracking-wider font-semibold">Score</span>
+                                            <span className={`text-4xl font-black ${getScoreColorClass(result.audit_score)}`}>{result.audit_score}</span>
+                                        </div>
                                     </div>
+                                    <p className="text-center text-gray-400 text-sm">System Health Score</p>
                                 </div>
 
                                 <div className="p-6 space-y-6">

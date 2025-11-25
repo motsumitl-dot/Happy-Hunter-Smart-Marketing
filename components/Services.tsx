@@ -10,14 +10,16 @@ interface ServiceCardProps {
 const ServiceCard: React.FC<ServiceCardProps> = ({ service, isActive, onClick }) => {
     return (
         <div 
-            className={`service-card ${isActive ? 'active' : ''}`} 
+            className={`service-card group ${isActive ? 'active' : ''}`} 
             data-filter={service.filter} 
             data-name={service.name} 
             aria-label={`Filter projects by ${service.name}`} 
             onClick={onClick}
         >
-            <div className="icon">{service.icon}</div>
-            <h3 className="text-xl font-bold text-gray-900 mt-4 mb-2">{service.name}</h3>
+            <div className="icon transition-transform duration-300 ease-out group-hover:scale-110 group-hover:-rotate-6 origin-center">
+                {service.icon}
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mt-4 mb-2 group-hover:text-yellow-600 transition-colors duration-300">{service.name}</h3>
             <p className="text-gray-600 text-sm flex-grow">
                 <strong>Problem:</strong> {service.problem}<br/>
                 <strong>Solution:</strong> {service.solution}

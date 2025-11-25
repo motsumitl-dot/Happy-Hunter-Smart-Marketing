@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 const Footer: React.FC = () => {
@@ -29,7 +30,7 @@ const Footer: React.FC = () => {
 
                 <p>&copy; 2025 Happy Hunter - Smart Marketing. All rights reserved.</p>
                 <p className="text-sm mt-1">Built by Thabo Leslie Motsumi</p>
-                <p className="text-xs mt-1">Code managed on <a href="https://github.com/happyhunterdigital.github.io" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400">GitHub</a></p>
+                <p className="text-xs mt-1">Code managed on <a href="https://github.com/happyhunterdigital.github.io" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400">GitHub</a></p>
             </div>
         </footer>
     );
