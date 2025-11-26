@@ -3,6 +3,7 @@ import React, { useState, useMemo } from 'react';
 import { caseStudies } from '../constants';
 import { CaseStudy } from '../types';
 import Modal from './Modal';
+import { BeforeAfterSlider } from './ui/BeforeAfterSlider';
 
 interface CaseStudyCardProps {
     study: CaseStudy;
@@ -96,12 +97,27 @@ const Projects: React.FC<ProjectsProps> = ({ activeFilter, onFilterReset, active
             {activeStudy && (
                 <Modal isOpen={!!openModalId} onClose={closeModal}>
                      <h2 className="text-2xl font-bold text-gray-900 mb-4">{activeStudy.title}</h2>
-                     {activeStudy.logo ? (
-                        <img src={activeStudy.logo} alt={`${activeStudy.title} Logo`} className="w-full h-auto rounded-lg mb-4 shadow-md object-contain max-h-60 bg-white p-2" loading="lazy" />
-                     ): (
-                        <div className="w-full h-40 rounded-lg mb-4 shadow-md bg-yellow-400 flex items-center justify-center p-4">
-                             <span className="text-gray-800 text-2xl font-bold text-center">{activeStudy.title}</span>
-                        </div>
+                     
+                     {/* Visual Proof: Slider OR Logo */}
+                     {activeStudy.beforeImage && activeStudy.afterImage ? (
+                         <div className="mb-8">
+                             <h4 className="text-sm font-bold text-gray-500 uppercase mb-2">Visual Proof (Interactive)</h4>
+                             <BeforeAfterSlider 
+                                beforeImage={activeStudy.beforeImage} 
+                                afterImage={activeStudy.afterImage} 
+                                beforeLabel="Before (Invisible)" 
+                                afterLabel="After (Ranked #1)"
+                             />
+                             <p className="text-xs text-center text-gray-400 mt-2">Drag the slider to see the transformation</p>
+                         </div>
+                     ) : (
+                         activeStudy.logo ? (
+                            <img src={activeStudy.logo} alt={`${activeStudy.title} Logo`} className="w-full h-auto rounded-lg mb-4 shadow-md object-contain max-h-60 bg-white p-2" loading="lazy" />
+                         ) : (
+                            <div className="w-full h-40 rounded-lg mb-4 shadow-md bg-yellow-400 flex items-center justify-center p-4">
+                                 <span className="text-gray-800 text-2xl font-bold text-center">{activeStudy.title}</span>
+                            </div>
+                         )
                      )}
 
                     <h3 className="text-lg font-semibold text-gray-800">The Problem:</h3>
