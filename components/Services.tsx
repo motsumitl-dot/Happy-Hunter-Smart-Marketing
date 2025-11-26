@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Service } from '../types';
 
@@ -10,20 +11,12 @@ interface ServiceCardProps {
 const ServiceCard: React.FC<ServiceCardProps> = ({ service, isActive, onClick }) => {
     return (
         <div 
-            className={`service-card group ${isActive ? 'active' : ''}`} 
-            data-filter={service.filter} 
-            data-name={service.name} 
-            aria-label={`Filter projects by ${service.name}`} 
+            className={`service-card ${isActive ? 'active' : ''}`} 
             onClick={onClick}
         >
-            <div className="icon transition-transform duration-300 ease-out group-hover:scale-110 group-hover:-rotate-6 origin-center">
-                {service.icon}
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mt-4 mb-2 group-hover:text-yellow-600 transition-colors duration-300">{service.name}</h3>
-            <p className="text-gray-600 text-sm flex-grow">
-                <strong>Problem:</strong> {service.problem}<br/>
-                <strong>Solution:</strong> {service.solution}
-            </p>
+            <div className="icon">{service.icon}</div>
+            <h3 className="text-xl font-bold text-gray-900 mt-4 mb-2">{service.name}</h3>
+            <p className="text-gray-600">{service.description}</p>
         </div>
     );
 };
@@ -45,10 +38,10 @@ const Services: React.FC<ServicesProps> = ({ services, activeFilter, onFilterSel
                     </p>
                 </div>
                 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
-                    {services.map(service => (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {services.map((service, index) => (
                         <ServiceCard 
-                            key={service.name}
+                            key={`${service.filter}-${index}`}
                             service={service}
                             isActive={activeFilter === service.filter}
                             onClick={() => onFilterSelect(service.filter)}

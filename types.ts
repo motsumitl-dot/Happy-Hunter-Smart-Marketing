@@ -1,26 +1,24 @@
+
 export interface Service {
     filter: string;
     name: string;
     icon: string;
-    problem: string;
-    solution: string;
+    description: string;
 }
 
 export interface CaseStudy {
     id: string;
     title: string;
     logo: string;
-    tags: string[];
-    description: string;
-    tagsDisplay: string[];
-    modalContent: {
-        challenge: string;
-        system: string[];
-        outcome: string;
-    };
+    tags: string[]; // For filtering
+    description: string; // Used for card summary
+    services: string[]; // List of services for display
+    challenge: string;
+    system: string;
+    outcome: string;
 }
 
-export interface AuditResponse {
+export interface GMBAuditResponse {
     business_name: string;
     audit_score: number;
     visibility_finding: string;
@@ -29,9 +27,4 @@ export interface AuditResponse {
     activity_finding: string;
     competitor_finding: string;
     the_win: string;
-    groundingMetadata?: {
-        groundingChunks: Array<{
-            web?: { uri: string; title: string };
-        }>;
-    };
 }

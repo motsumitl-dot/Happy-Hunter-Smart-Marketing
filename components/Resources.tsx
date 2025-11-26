@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 const Resources: React.FC = () => {
@@ -8,7 +9,12 @@ const Resources: React.FC = () => {
                 <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-8">
                     Access our expert content, checklists, and deep-dive guides on AI, GMB, and Inbound Marketing. Subscribe to get our exclusive PDFs and newsletters delivered straight to your inbox.
                 </p>
-                <a href="https://happyhunter.beehiiv.com/" target="_blank" rel="noopener noreferrer" className="btn-yellow px-8 py-3 rounded-lg text-lg font-bold shadow-md hover:shadow-lg transition-transform transform hover:scale-105">
+                <a 
+                    href="https://happyhunter.beehiiv.com/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="btn-yellow px-8 py-3 rounded-lg text-lg font-bold shadow-md hover:shadow-lg transition-transform transform hover:scale-105"
+                >
                     Free Resources (Newsletters & Guides)
                 </a>
             </div>

@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { caseStudies } from '../constants';
 import { CaseStudy } from '../types';
@@ -10,22 +11,25 @@ interface CaseStudyCardProps {
 
 const CaseStudyCard: React.FC<CaseStudyCardProps> = ({ study, onLearnMore }) => {
     return (
-        <div className="case-study-card" data-tags={study.tags.join(' ')}>
+        <div className="case-study-card">
             <div className="case-study-card-content flex flex-col h-full">
                 <div className="flex-grow">
                      {study.logo ? (
                         <img src={study.logo} alt={`${study.title} Logo`} className="w-12 h-12 object-contain mb-4 rounded-full border border-gray-200 p-1" loading="lazy" />
                     ) : (
-                        <div className="w-12 h-12 mb-4 flex items-center justify-center bg-yellow-100 rounded-full border border-yellow-200">
-                           <span className="text-xl">🧱</span>
+                        <div className="w-12 h-12 mb-4 flex items-center justify-center">
+                           <span className="text-3xl text-yellow-500">🧱</span>
                         </div>
                     )}
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">{study.title}</h3>
-                    <p className="text-gray-600 mb-4">{study.description}</p>
-                    <div className="mb-4">
-                        {study.tagsDisplay.map((tag, idx) => (
-                            <span key={idx} className="case-study-card-tag">{tag}</span>
+                    <p className="text-gray-600 mb-4">{study.challenge.substring(0, 100)}...</p>
+                    <div className="mb-4 flex flex-wrap gap-1">
+                        {study.services.slice(0, 3).map((tag, i) => (
+                            <span key={i} className="case-study-card-tag">{tag}</span>
                         ))}
+                        {study.services.length > 3 && (
+                            <span className="case-study-card-tag">+{study.services.length - 3} More</span>
+                        )}
                     </div>
                 </div>
                 <button className="text-yellow-600 font-semibold text-left mt-auto" onClick={onLearnMore}>
@@ -65,9 +69,9 @@ const Projects: React.FC<ProjectsProps> = ({ activeFilter, onFilterReset, active
                     <div className="text-center mb-8">
                         <h2 className="text-4xl font-bold text-gray-900 mb-2">Project Highlights</h2>
                          {activeFilter && (
-                             <p id="filter-message-container" className="text-lg text-yellow-600 font-semibold mb-4">
+                             <p className="text-lg text-yellow-600 font-semibold mb-4">
                                 Showing projects related to <span className="underline">{activeServiceName}</span>. 
-                                <button id="filter-reset-btn" className="text-gray-600 hover:text-gray-900 ml-2 text-sm" onClick={onFilterReset} aria-label="Reset project filter">
+                                <button className="text-gray-600 hover:text-gray-900 ml-2 text-sm" onClick={onFilterReset} aria-label="Reset project filter">
                                     [Reset Filter]
                                 </button>
                             </p>
@@ -76,14 +80,14 @@ const Projects: React.FC<ProjectsProps> = ({ activeFilter, onFilterReset, active
                     </div>
                     
                     {filteredStudies.length > 0 ? (
-                         <div id="case-study-grid" className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {filteredStudies.map(study => (
                                 <CaseStudyCard key={study.id} study={study} onLearnMore={() => openModal(study.id)} />
                             ))}
                         </div>
                     ) : (
-                        <div id="no-results-message" className="text-center text-gray-600 text-lg py-10">
-                            No projects match this service category. <button onClick={onFilterReset} className="text-yellow-600 font-semibold underline" aria-label="Show All Projects">Show All Projects</button>
+                        <div className="text-center text-gray-600 text-lg py-10">
+                            No projects match this service category. <button onClick={onFilterReset} className="text-yellow-600 font-semibold underline">Show All Projects</button>
                         </div>
                     )}
                 </div>
@@ -91,46 +95,25 @@ const Projects: React.FC<ProjectsProps> = ({ activeFilter, onFilterReset, active
             
             {activeStudy && (
                 <Modal isOpen={!!openModalId} onClose={closeModal}>
-                     <h2 id={`modal-${activeStudy.id}-title`} className="text-2xl font-bold text-gray-900 mb-4">{activeStudy.title}</h2>
+                     <h2 className="text-2xl font-bold text-gray-900 mb-4">{activeStudy.title}</h2>
                      {activeStudy.logo ? (
-                        <img 
-                            src={activeStudy.logo} 
-                            alt={`${activeStudy.title} Logo`} 
-                            className="block mx-auto max-w-full h-auto max-h-80 rounded-lg mb-4 shadow-md object-contain bg-white p-2" 
-                            loading="lazy" 
-                        />
+                        <img src={activeStudy.logo} alt={`${activeStudy.title} Logo`} className="w-full h-auto rounded-lg mb-4 shadow-md object-contain max-h-60 bg-white p-2" loading="lazy" />
                      ): (
                         <div className="w-full h-40 rounded-lg mb-4 shadow-md bg-yellow-400 flex items-center justify-center p-4">
                              <span className="text-gray-800 text-2xl font-bold text-center">{activeStudy.title}</span>
                         </div>
                      )}
 
-                    <h3 className="text-lg font-semibold text-gray-800">The Challenge:</h3>
-                    <p className="text-gray-600 mb-4">{activeStudy.modalContent.challenge}</p>
+                    <h3 className="text-lg font-semibold text-gray-800">The Problem:</h3>
+                    <p className="text-gray-600 mb-4">{activeStudy.challenge}</p>
                     
-                    <h3 className="text-lg font-semibold text-gray-800">The System I Built:</h3>
-                    <ul className="list-disc list-inside text-gray-600 my-4 space-y-2">
-                       {activeStudy.modalContent.system.map((item, index) => {
-                           const parts = item.split(':');
-                           return (
-                               <li key={index}>
-                                   {parts.length > 1 ? (
-                                        <>
-                                            <span className="font-semibold">{parts[0]}:</span>{parts.slice(1).join(':')}
-                                        </>
-                                   ) : (
-                                       item
-                                   )}
-                                </li>
-                           );
-                       })}
-                    </ul>
+                    <h3 className="text-lg font-semibold text-gray-800">The Solution (System):</h3>
+                    <p className="text-gray-600 mb-4">{activeStudy.system}</p>
 
-                    <h3 className="text-lg font-semibold text-gray-800">Outcome:</h3>
-                    <p className="text-gray-600">{activeStudy.modalContent.outcome}</p>
+                    <h3 className="text-lg font-semibold text-gray-800">The Win:</h3>
+                    <p className="text-gray-600">{activeStudy.outcome}</p>
                 </Modal>
             )}
-
         </>
     );
 };

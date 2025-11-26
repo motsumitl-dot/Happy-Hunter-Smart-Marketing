@@ -1,8 +1,9 @@
+
 import React from 'react';
 
 const Hero: React.FC = () => {
     return (
-        <section className="hero-bg text-white">
+        <section id="hero" className="hero-bg text-white">
             <div className="container mx-auto px-6 py-24 text-center">
                 <h1 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
                     You Don't Need More "Marketing."
