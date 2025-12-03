@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const Cta: React.FC = () => {
@@ -7,7 +6,7 @@ const Cta: React.FC = () => {
             <div className="container mx-auto px-6 py-20 text-center">
                 <h2 className="text-4xl font-bold mb-4">Tired of Guessing?</h2>
                 <p className="text-xl text-yellow-400 font-semibold mb-8">Let's build the system that makes your business grow.</p>
-                <a href="https://calendly.com/motsumitl/30min" target="_blank" rel="noopener noreferrer" className="btn-yellow px-8 py-4 rounded-lg text-lg font-bold">
+                <a href="https://calendly.com/motsumitl/30min" target="_blank" rel="noopener noreferrer" className="inline-block px-8 py-4 rounded-lg text-lg font-bold btn-yellow">
                     Schedule Your Free Systems Audit
                 </a>
             </div>
