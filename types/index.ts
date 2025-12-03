@@ -3,7 +3,8 @@ export interface Service {
   filterId: string;
   icon: string;
   name: string;
-  description: string;
+  problem: string;
+  solution: string;
 }
 
 export interface Project {

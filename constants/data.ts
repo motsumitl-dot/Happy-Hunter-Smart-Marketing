@@ -7,49 +7,56 @@ export const servicesData: Service[] = [
         filterId: 'growth', 
         icon: '📍', 
         name: 'Local Search & GMB Command', 
-        description: 'Technical GMB audits, reinstatement, and local SEO optimization to rank #1 on Maps.' 
+        problem: 'Invisible to local customers.',
+        solution: 'Technical GMB audits, reinstatement, and local SEO optimization to rank #1 on Maps.' 
     },
     { 
         id: 'content-seo',
         filterId: 'strategy', 
         icon: '✍️', 
         name: 'Content Strategy & Organic SEO', 
-        description: 'AI-driven content plans and on-page SEO to answer customer questions and drive free traffic.' 
+        problem: 'Low authority and traffic.',
+        solution: 'AI-driven content plans and on-page SEO to answer customer questions and drive free traffic.' 
     },
     { 
         id: 'paid-media',
         filterId: 'growth', 
         icon: '🎯', 
         name: 'Paid Media & PPC', 
-        description: 'High-intent Google Ads and targeted Social Media campaigns to inject immediate traffic.' 
+        problem: 'Need leads now.',
+        solution: 'High-intent Google Ads and targeted Social Media campaigns (Paid Social) to inject immediate traffic.' 
     },
     { 
         id: 'email-automation',
         filterId: 'automation', 
         icon: '⚙️', 
         name: 'Email Marketing & Automation', 
-        description: 'Automated nurture sequences (Welcome, Abandoned Cart) via Email and WhatsApp that turn cold leads into loyal customers.' 
+        problem: 'Leaky funnel.',
+        solution: 'Automated nurture sequences (Welcome, Abandoned Cart) via Email and WhatsApp that turn cold leads into loyal customers while you sleep.' 
     },
     { 
         id: 'inbound',
         filterId: 'strategy', 
         icon: '🧲', 
         name: 'Inbound Marketing Strategy', 
-        description: 'A holistic methodology (Attract, Engage, Delight) that pulls customers to you using valuable content.' 
+        problem: 'Chasing clients.',
+        solution: 'A holistic methodology (Attract, Engage, Delight) that pulls customers to you using valuable content and experiences.' 
     },
     { 
         id: 'social-media',
         filterId: 'creative', 
         icon: '📱', 
         name: 'Social Media Marketing', 
-        description: 'Community management and strategic posting schedules to build brand awareness and social proof.' 
+        problem: 'No brand engagement.',
+        solution: 'Community management and strategic posting schedules to build brand awareness and social proof.' 
     },
     { 
         id: 'analytics',
         filterId: 'systems', 
         icon: '📊', 
         name: 'Analytics & Conversion Ops', 
-        description: 'Holistic dashboards (GA4, Looker Studio) and CRO testing to prove ROI and optimize the win.' 
+        problem: 'Guessing what works.',
+        solution: 'Holistic dashboards (GA4, Looker Studio) and CRO testing to prove ROI and optimize the win.' 
     }
 ];
 

@@ -28,10 +28,15 @@ const Services: React.FC<ServicesProps> = ({ services, onServiceClick, activeFil
                             tabIndex={0} 
                             onClick={() => onServiceClick(service.filterId)}
                             onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onServiceClick(service.filterId)}
+                            data-filter={service.filterId}
+                            data-name={service.name}
                         >
-                            <div className="text-3xl text-yellow-400">{service.icon}</div>
+                            <div className="text-3xl text-yellow-400 icon">{service.icon}</div>
                             <h3 className="text-xl font-bold text-gray-900 mt-4 mb-2">{service.name}</h3>
-                            <p className="text-gray-600">{service.description}</p>
+                            <p className="text-gray-600">
+                                <strong>Problem:</strong> {service.problem}<br />
+                                <strong>Solution:</strong> {service.solution}
+                            </p>
                         </div>
                     ))}
                 </div>

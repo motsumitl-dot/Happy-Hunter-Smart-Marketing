@@ -27,7 +27,7 @@ export const generateGmbAudit = async (businessName: string, businessLocation: s
 
     try {
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "gemini-2.5-flash-preview-09-2025",
             contents: userQuery,
             config: {
                 tools: [{googleSearch: {}}],
